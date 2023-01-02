@@ -7,12 +7,12 @@
 
 (defn- variable-rules
   []
-  {"today" (page-ref/->page-ref (date/today))
-   "yesterday" (page-ref/->page-ref (date/yesterday))
-   "tomorrow" (page-ref/->page-ref (date/tomorrow))
-   "time" (date/get-current-time)
-   "current page" (page-ref/->page-ref (or (state/get-current-page)
-                                           (date/today)))})
+  (merge {"today" (page-ref/->page-ref (date/today))
+          "yesterday" (page-ref/->page-ref (date/yesterday))
+          "tomorrow" (page-ref/->page-ref (date/tomorrow))
+          "time" (date/get-current-time)
+          "current page" (page-ref/->page-ref (or (state/get-current-page)
+                                              (date/today)))} (state/get-variable-rules)))
 
 ;; TODO: programmable
 ;; context information, date, current page

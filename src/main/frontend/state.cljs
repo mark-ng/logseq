@@ -395,6 +395,11 @@ should be done through this fn in order to get global config and config defaults
     (when-not (string/blank? template)
       (string/trim template))))
 
+(defn get-variable-rules
+  []
+  (when-let [rules (get-in (get-config) [:variable-rules])]
+    rules))
+
 (defn all-pages-public?
   []
   (let [value (:publishing/all-pages-public? (get-config))
