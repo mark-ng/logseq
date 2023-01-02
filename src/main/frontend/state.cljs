@@ -5,6 +5,7 @@
             [cljs.core.async :as async :refer [<!]]
             [cljs.spec.alpha :as s]
             [clojure.string :as string]
+            [frontend.extensions.sci :as sci]
             [dommy.core :as dom]
             [electron.ipc :as ipc]
             [frontend.mobile.util :as mobile-util]
@@ -397,8 +398,11 @@ should be done through this fn in order to get global config and config defaults
 
 (defn get-variable-rules
   []
-  (when-let [rules (get-in (get-config) [:variable-rules])]
-    rules))
+  (when-let [rule (get-in (get-config) [:variable-rules])]
+    (into {} (map (fn [rule]
+                    (if (:is-code? rule)
+                      (hash-map (:rule rule) (sci/eval-string (:value rule)))
+                      (hash-map (:rule rule) (:value rule)))) rule))))
 
 (defn all-pages-public?
   []

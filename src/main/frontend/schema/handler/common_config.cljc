@@ -13,9 +13,7 @@
     [:default-templates [:map-of
                          [:enum :journals]
                          :string]]
-    [:variable-rules [:map-of
-                      :string
-                      :string]]
+    [:variable-rules [:vector :map]]
     [:ui/enable-tooltip? :boolean]
     [:ui/show-brackets? :boolean]
     [:feature/enable-block-timestamps? :boolean]
