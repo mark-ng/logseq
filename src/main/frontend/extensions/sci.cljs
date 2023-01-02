@@ -17,6 +17,31 @@
 (defn- average [coll]
   (/ (reduce + coll) (count coll)))
 
+(defn week-number
+  "Week number according to the ISO-8601 standard, weeks starting on
+  Monday. The first week of the year is the week that contains that
+  year's first Thursday (='First 4-day week'). The highest week number
+  in a year is either 52 or 53."
+  []
+  (let [year (.getFullYear (js/Date.))
+        month (.getMonth (js/Date.))
+        date (.getDate (js/Date.))
+        day (.getDay (js/Date.))
+        thursday (js/Date. year month (- (+ date 4) (if (= 0 day) 7 day)))
+        year-start (js/Date. year 0 1)]
+    (Math/ceil (/ (+ (/ (- (.getTime thursday)
+                           (.getTime year-start))
+                        (* 1000 60 60 24))
+                     1)
+                  7))))
+
+(defn week-year
+  []
+  (let [date (js/Date.)]
+  (.setDate date (- (+ (.getDate date) 3)
+                   (mod (+ 6 (.getDay date)) 7)))
+  (.getFullYear date)))
+
 (defn- call-api
   "Given a fn name from logseq.api, invokes it with the given arguments"
   [fn-name & args]
@@ -35,6 +60,8 @@
      (sci/eval-string s (merge-with merge
                                     {:bindings {'sum sum
                                                 'average average
+                                                'week-number week-number
+                                                'week-year week-year
                                                 'parseFloat js/parseFloat
                                                 'isNaN js/isNaN
                                                 'log js/console.log

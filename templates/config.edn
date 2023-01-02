@@ -20,6 +20,11 @@
  :default-templates
  {:journals ""}
 
+
+;; E.g.  [{:rule "name" :value "value" :is-code? false} {:rule "weekday" :value "(+ 1 1)" :is-code? true}]
+ :variable-rules 
+ []
+
  ;; Whether to enable hover on tooltip preview feature
  ;; Default is true, you can also toggle this via setting page
  :ui/enable-tooltip? true
